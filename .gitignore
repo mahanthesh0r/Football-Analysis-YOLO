@@ -1,0 +1,6 @@
+training/
+stubs/
+input_videos/
+output_videos/
+.venv/
+myvenv/
