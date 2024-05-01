@@ -4,6 +4,8 @@ import cv2
 import numpy as np
 from team_assigner import TeamAssigner
 from player_ball_assigner import PlayerBallAssigner
+from camera_movement_estimator import CameraMovementEstimator
+
 
 def main():
     video_frames = read_video('input_videos/08fd33_4.mp4')
@@ -13,6 +15,13 @@ def main():
     tracker = Tracker('models/best.pt')
 
     tracks = tracker.get_object_tracks(video_frames, read_from_stub=True, stub_path='stubs/track_stubs.pk1')
+
+    tracker.add_position_to_tracks(tracks)
+
+    camera_movement_estimator = CameraMovementEstimator(video_frames[0])
+    camera_movement_per_frame = camera_movement_estimator.get_camera_movement(video_frames, read_from_stub=True, stub_path='stubs/camera_movement.pk1')
+
+    camera_movement_estimator.add_adjust_positions_to_tracks(tracks, camera_movement_per_frame)
 
     #intpolate ball position
     tracks["ball"] = tracker.interpolate_ball_positions(tracks["ball"])
@@ -52,6 +61,9 @@ def main():
     team_ball_control = np.array(team_ball_control)
 
     output_video_frames = tracker.draw_annotations(video_frames, tracks, team_ball_control)
+
+    ##Draw canera movement
+    output_video_frames = camera_movement_estimator.draw_camera_movement(output_video_frames, camera_movement_per_frame)
     
     save_video(output_video_frames, 'output_videos/output_video1.avi')
 
