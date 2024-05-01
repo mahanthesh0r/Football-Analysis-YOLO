@@ -12,6 +12,9 @@ def main():
 
     tracks = tracker.get_object_tracks(video_frames, read_from_stub=True, stub_path='stubs/track_stubs.pk1')
 
+    #intpolate ball position
+    tracks["ball"] = tracker.interpolate_ball_positions(tracks["ball"])
+
     #CROP PLAYER IMAGE
     # for track_id, player in tracks['players'][0].items():
     #     bbox = player['bbox']
