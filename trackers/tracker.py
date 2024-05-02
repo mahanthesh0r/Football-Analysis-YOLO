@@ -125,7 +125,7 @@ class Tracker:
             if track_id > 99:
                 x1_text -= 10
 
-            cv2.putText(frame, f"{track_id}", (int(x1_text), int(y1_rect+15)), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0,0,0), 2)
+            cv2.putText(frame, f"{track_id}", (int(x1_text), int(y1_rect+15)), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0,0,0), 1)
 
 
         return frame
